@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api ListenNow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.ico') }}">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='images/icon2.png') }}" alt="Logo ListenNow">
+            <h1>Api <span style="color: var(--secondary);">Listen</span><span style="color: var(--primary);">Now</span></h1>
+        </div>
+
+        <nav>
+            <a href="https://www.devpree.com.br/lecoffee/">LeCoffee</a>
+            <a href="https://www.devpree.com.br/investme">InvestMe</a>
+            <a href="https://www.linkedin.com/in/geovani-debastiani/">Developer</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="warning">
+            <p>📢 This Api is still in developing somethings, probably cannot working well.</p>
+        </div>
+    
+        <div class="routes">
+            <h2>Routes</h2>
+    
+            <p>Here are the routes that you can use to donwload and syncronize songs with your account in the ListenNow App.</p>
+    
+            <div>
+                <h3>Download Songs</h3>
+                <p class="code-style">/listennow/download/<span>{yt_music_video_id}</span>/<span>{user_token}</span></p>
+            </div>
+        
+            <div>
+                <h3>Search Songs</h3>
+                <p class="code-style">/listennow/search/<span>{song_name}</span></p>
+            </div>
+        
+            <div>
+                <h3>Syncronize Songs</h3>
+                <p class="code-style">/listennow/syncronize/<span>{user_token}</span></p>
+            </div>
+        </div>
+
+        <div class="apps">
+            <div>
+                <i class="fi fi-rr-mobile-notch"></i>
+                Mobile
+            </div>
+            
+            <div>
+                <i class="fi fi-rr-browser"></i>
+                Web
+            </div>
+            
+            <div>
+                <i class="fi fi-rr-computer"></i>
+                Deskop
+            </div>
+        </div>
+    </main>
+</body>
+</html>
