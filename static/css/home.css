@@ -62,7 +62,7 @@ nav a {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-width: 670px;
+    width: 670px;
 }
 
 .routes h2 {
