@@ -4,6 +4,9 @@ from auth.configuration import ytmusic
 def search(title):
     return ytmusic.search(title, "songs")
 
+def searchVideos(title):
+    return ytmusic.search(title, "videos")
+
 
 def getSongTitle(videoId):
     title = str(ytmusic.get_song(videoId)['videoDetails']['title'])

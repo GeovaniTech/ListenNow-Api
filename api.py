@@ -21,6 +21,12 @@ def home():
 def getSongs(title):
     return jsonify(search(title))
 
+
+@app.route('/listennow/search/videos/<string:title>', methods=['GET'])
+def getVideos(title):
+    return jsonify(searchVideos(title))
+
+
 @app.route('/listennow/download/<string:videoIdParam>/<string:clientTokenParam>', methods=['GET'])
 def loadDownloadPage(videoIdParam, clientTokenParam):
     videoId = videoIdParam
