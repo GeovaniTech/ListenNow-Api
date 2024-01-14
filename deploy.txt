@@ -1,0 +1,17 @@
+systemctl stop api_listennow
+
+cd "/projects/"
+
+rm -r "ListenNow-Api"
+
+git clone https://github.com/GeovaniTech/ListenNow-Api.git
+
+cd "ListenNow-Api"
+
+mkdir utils
+
+cd "utils"
+
+cp /projects/security-files/api_listennow/databasePG.py /projects/ListenNow-Api/utils/
+
+systemctl start api_listennow
