@@ -13,7 +13,7 @@ def progress(value):
 
 def download(videoId, fileName, clientToken):
     ytdl_options = {
-        'outtmpl': f'/projects/apilistennow/songs/{fileName}.%(ext)s',
+        'outtmpl': f'/projects/ListenNow-Api/songs/{fileName}.%(ext)s',
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
