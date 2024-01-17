@@ -45,9 +45,6 @@ def synchronizeSongs():
 
 def downloadFun(videoId, fileName, clientToken):
     download(videoId, fileName, clientToken)
-
-    time.sleep(5)
-
     project_root = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(project_root, 'songs', f'{fileName}.mp3')
 
@@ -64,7 +61,6 @@ def saveSong(filePath, videoId, fileName):
     album = getAlbum(videoId)
 
     save(fileName, small_thumb, large_thumb, convertThumbToBytes(small_thumb), convertThumbToBytes(large_thumb), data, lyrics, videoId, artist, album)
-    time.sleep(2)
     os.remove(filePath)
 
 
