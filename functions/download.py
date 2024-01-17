@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-import youtube_dl
+import yt_dlp as youtube_dl
 import requests
 
 base_url = "https://www.youtube.com/watch?v="
