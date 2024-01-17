@@ -34,11 +34,17 @@ def getLyrics(videoId):
 
 
 def getArtist(videoId):
-    return str(ytmusic.get_artist(ytmusic.get_song(videoId)['videoDetails']['channelId'])['name'])
+    try:
+        return str(ytmusic.get_artist(ytmusic.get_song(videoId)['videoDetails']['channelId'])['name'])
+    except Exception:
+        return "Not Found"
 
 
 def getAlbum(videoId):
-    return str(ytmusic.get_watch_playlist(videoId)['tracks'][0]['album']['name'])
+    try:
+        return str(ytmusic.get_watch_playlist(videoId)['tracks'][0]['album']['name'])
+    except Exception:
+        return "Not Found"
 
 
 if __name__ == '__main__':
