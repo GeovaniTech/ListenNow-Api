@@ -1,14 +1,12 @@
 import os
-import time
 from functools import partial
+from threading import Thread
 
+from flask import Flask, jsonify, render_template
 from gunicorn.app.base import BaseApplication
 
-from functions.search import *
-
-from threading import Thread
 from functions.download import download, convertThumbToBytes
-from flask import Flask, jsonify, render_template
+from functions.search import *
 from service.KeepSong import save, listSongs
 
 app = Flask(__name__)
@@ -16,6 +14,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template("home.html")
+
 
 @app.route('/listennow/search/<string:title>', methods=['GET'])
 def getSongs(title):
@@ -39,18 +38,21 @@ def loadDownloadPage(videoIdParam, clientTokenParam):
 
     return render_template("index.html")
 
+
 @app.route("/listennow/synchronize", methods=['GET'])
 def synchronizeSongs():
     return jsonify(listSongs())
+
 
 def downloadFun(videoId, fileName, clientToken):
     download(videoId, fileName, clientToken)
     project_root = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(project_root, 'songs', f'{fileName}.mp3')
 
-    saveSong(file_path, videoId, fileName)
+    saveSong(file_path, videoId, fileName, clientToken)
 
-def saveSong(filePath, videoId, fileName):
+
+def saveSong(filePath, videoId, fileName, userId):
     with open(f'{filePath}', 'rb') as f:
         data = f.read()
 
@@ -60,7 +62,7 @@ def saveSong(filePath, videoId, fileName):
     artist = getArtist(videoId)
     album = getAlbum(videoId)
 
-    save(fileName, small_thumb, large_thumb, convertThumbToBytes(small_thumb), convertThumbToBytes(large_thumb), data, lyrics, videoId, artist, album)
+    save(fileName, small_thumb, large_thumb, convertThumbToBytes(small_thumb), convertThumbToBytes(large_thumb), data, lyrics, videoId, artist, album, userId)
     os.remove(filePath)
 
 
@@ -88,5 +90,5 @@ if __name__ == '__main__':
         'keyfile': ssl_context[1],
     }
 
-    #StandaloneApplication(app, options).run()
-    app.run( host='0.0.0.0', port="5000", debug=True)
+    StandaloneApplication(app, options).run()
+    #app.run( host='0.0.0.0', port="5000", debug=True)
