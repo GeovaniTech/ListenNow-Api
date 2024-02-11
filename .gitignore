@@ -1,3 +1,4 @@
 databasePG.py
 __pycache__
 .idea
+auth.json
