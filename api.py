@@ -58,11 +58,21 @@ def saveSong(filePath, videoId, fileName, userId):
 
     small_thumb = getSmallThumb(videoId)
     large_thumb = getLargeThumb(videoId)
+
+    small_thumb_bytes = None
+    large_thumb_bytes = None
+
+    if small_thumb != "Not Found":
+        small_thumb_bytes = convertThumbToBytes(small_thumb)
+
+    if large_thumb != "Not Found":
+        large_thumb_bytes = convertThumbToBytes(large_thumb)
+
     lyrics = getLyrics(videoId)
     artist = getArtist(videoId)
     album = getAlbum(videoId)
 
-    save(fileName, small_thumb, large_thumb, convertThumbToBytes(small_thumb), convertThumbToBytes(large_thumb), data, lyrics, videoId, artist, album, userId)
+    save(fileName, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, data, lyrics, videoId, artist, album, userId)
     os.remove(filePath)
 
 
@@ -90,5 +100,5 @@ if __name__ == '__main__':
         'keyfile': ssl_context[1],
     }
 
-    StandaloneApplication(app, options).run()
-    #app.run( host='0.0.0.0', port="5000", debug=True)
+    #StandaloneApplication(app, options).run()
+    app.run( host='0.0.0.0', port="5000", debug=True)

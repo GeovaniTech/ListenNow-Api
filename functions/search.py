@@ -12,16 +12,22 @@ def getSongTitle(videoId):
     title = str(ytmusic.get_song(videoId)['videoDetails']['title'])
     title = title.replace('"', '')
     title = title.replace(':', '')
+    title = title.replace("/", ' ')
 
     return title
 
 
 def getSmallThumb(videoId):
-    return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][0]['url']
-
+    try:
+        return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][0]['url']
+    except Exception:
+        return "Not Found"
 
 def getLargeThumb(videoId):
-    return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][1]['url']
+    try:
+        return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][1]['url']
+    except Exception:
+        return "Not Found"
 
 
 def getLyrics(videoId):
@@ -30,7 +36,7 @@ def getLyrics(videoId):
 
         return lyrics
     except Exception:
-        return "Not found"
+        return "Not Found"
 
 
 def getArtist(videoId):
