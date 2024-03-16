@@ -1,14 +1,16 @@
 import base64
 
-from utils.databasePG import conn
-def save(title, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, file, lyrics, videoId, artist, album, userId):
+from utils.databasePG import *
+
+
+def save(title, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, file, lyrics, video_id, artist, album, user_id):
     sql_query = """
         INSERT INTO song (title, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, file, lyrics, videoId, artist, album, user_id)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
-    cur = conn.cursor()
-    cur.execute(sql_query, (title, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, file, lyrics, videoId, artist, album, userId))
+    cur = get_cursor_db()
+    cur.execute(sql_query, (title, small_thumb, large_thumb, small_thumb_bytes, large_thumb_bytes, file, lyrics, video_id, artist, album, user_id))
     conn.commit()
 
 
