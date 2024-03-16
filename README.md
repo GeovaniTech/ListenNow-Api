@@ -7,7 +7,7 @@ Access the api [here](https://api.devpree.com.br)
 
 ## Techlogies 
 + Python
-+ Youtubemusicapi [Dpcumentation](https://ytmusicapi.readthedocs.io/en/stable/)
++ Youtubemusicapi [Documentation](https://ytmusicapi.readthedocs.io/en/stable/)
 + Postgresql
 
 ## Api Home
