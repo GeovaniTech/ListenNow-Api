@@ -1,8 +1,12 @@
 from __future__ import unicode_literals
+
+import os
 import yt_dlp as youtube_dl
-import requests
+
+from service.KeepSong import save_song
 
 base_url = "https://www.youtube.com/watch?v="
+
 
 def progress(value):
     if value['status'] == 'finished':
@@ -11,9 +15,10 @@ def progress(value):
     elif value['status'] == 'downloading':
         print(value['filename'], value['_percent_str'], value['_eta_str'])
 
-def download(videoId, fileName, clientToken):
+
+def download(video_id, file_name, client_token):
     ytdl_options = {
-        'outtmpl': f'songs/{fileName}.%(ext)s',
+        'outtmpl': f'songs/{file_name}.%(ext)s',
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -24,17 +29,15 @@ def download(videoId, fileName, clientToken):
     }
 
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
-        url = base_url + videoId
+        url = base_url + video_id
         print(f"DOWNLOADING: {url}")
         ytdl.download([url])
 
+    file_path = f"songs/{file_name}.mp3"
 
-def convertThumbToBytes(thumb):
-    try:
-        response = requests.get(thumb)
-        response.raise_for_status()  # Raise an exception if the request was not successful
+    save_song(file_path, video_id, file_name, client_token)
 
-        image_bytes = response.content
-        return image_bytes
-    except:
-        print("ERRO: convert image to bytes")
+
+
+
+

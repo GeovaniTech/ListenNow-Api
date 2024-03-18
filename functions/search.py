@@ -4,12 +4,13 @@ from auth.configuration import ytmusic
 def search(title):
     return ytmusic.search(title, "songs")
 
-def searchVideos(title):
+
+def search_videos(title):
     return ytmusic.search(title, "videos")
 
 
-def getSongTitle(videoId):
-    title = str(ytmusic.get_song(videoId)['videoDetails']['title'])
+def get_song_title(video_id):
+    title = str(ytmusic.get_song(video_id)['videoDetails']['title'])
     title = title.replace('"', '')
     title = title.replace(':', '')
     title = title.replace("/", ' ')
@@ -17,41 +18,25 @@ def getSongTitle(videoId):
     return title
 
 
-def getSmallThumb(videoId):
+def get_lyrics(video_id):
     try:
-        return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][0]['url']
-    except Exception:
-        return "Not Found"
-
-def getLargeThumb(videoId):
-    try:
-        return ytmusic.get_song(videoId)['videoDetails']['thumbnail']['thumbnails'][1]['url']
-    except Exception:
-        return "Not Found"
-
-
-def getLyrics(videoId):
-    try:
-        lyrics = str(ytmusic.get_lyrics(ytmusic.get_watch_playlist(videoId)['lyrics'])['lyrics'])
+        lyrics = str(ytmusic.get_lyrics(ytmusic.get_watch_playlist(video_id)['lyrics'])['lyrics'])
 
         return lyrics
     except Exception:
         return "Not Found"
 
 
-def getArtist(videoId):
+def get_artist(video_id):
     try:
-        return str(ytmusic.get_artist(ytmusic.get_song(videoId)['videoDetails']['channelId'])['name'])
+        return str(ytmusic.get_artist(ytmusic.get_song(video_id)['videoDetails']['channelId'])['name'])
     except Exception:
         return "Not Found"
 
 
-def getAlbum(videoId):
+def get_album(video_id):
     try:
-        return str(ytmusic.get_watch_playlist(videoId)['tracks'][0]['album']['name'])
+        return str(ytmusic.get_watch_playlist(video_id)['tracks'][0]['album']['name'])
     except Exception:
         return "Not Found"
 
-
-if __name__ == '__main__':
-    print("Teste")
