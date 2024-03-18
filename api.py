@@ -3,6 +3,7 @@ from functools import partial
 from threading import Thread
 
 from flask import Flask, jsonify, render_template
+from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
@@ -39,28 +40,36 @@ def download_route(video_id_param, client_token_param):
 
 
 if __name__ == '__main__':
-    # class StandaloneApplication(BaseApplication):
-    #     def __init__(self, app, options=None):
-    #         self.options = options or {}
-    #         self.application = app
-    #         super(StandaloneApplication, self).__init__()
-    #
-    #     def load_config(self):
-    #         config = {key: value for key, value in self.options.items() if key in self.cfg.settings and value is not None}
-    #         for key, value in config.items():
-    #             self.cfg.set(key.lower(), value)
-    #
-    #     def load(self):
-    #         return self.application
-    #
-    # ssl_context = ('/certs/server.cert', '/certs/server.key')  # Update with your SSL certificate and private key paths
-    #
-    # options = {
-    #     'bind': '0.0.0.0:8000',
-    #     'workers': 4,  # You can adjust the number of workers based on your needs
-    #     'certfile': ssl_context[0],
-    #     'keyfile': ssl_context[1],
-    # }
-    #
-    # StandaloneApplication(app, options).run()
-    app.run( host='0.0.0.0', port="5000", debug=True)
+    project_root = os.path.abspath(os.path.dirname(__file__))
+
+    if project_root == '/projects/ListenNow-Api':
+        class StandaloneApplication(BaseApplication):
+            def __init__(self, app, options=None):
+                self.options = options or {}
+                self.application = app
+                super(StandaloneApplication, self).__init__()
+
+            def load_config(self):
+                config = {key: value for key, value in self.options.items() if
+                          key in self.cfg.settings and value is not None}
+                for key, value in config.items():
+                    self.cfg.set(key.lower(), value)
+
+            def load(self):
+                return self.application
+
+
+        ssl_context = (
+        '/certs/server.cert', '/certs/server.key')
+
+        options = {
+            'bind': '0.0.0.0:8000',
+            'workers': 4,
+            'certfile': ssl_context[0],
+            'keyfile': ssl_context[1],
+        }
+
+        StandaloneApplication(app, options).run()
+    else:
+        app.run(host='0.0.0.0', port="5000", debug=True)
+
