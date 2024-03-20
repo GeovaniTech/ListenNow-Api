@@ -2,7 +2,7 @@ import os
 from functools import partial
 from threading import Thread
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, make_response, request
 from gunicorn.app.base import BaseApplication
 
 from functions.download import download
@@ -18,12 +18,12 @@ def home():
 
 @app.route('/listennow/search/<string:title>', methods=['GET'])
 def search_songs(title):
-    return jsonify(search(title))
+    return make_response(jsonify(search(title)))
 
 
 @app.route('/listennow/search/videos/<string:title>', methods=['GET'])
 def search_videos(title):
-    return jsonify(search_videos(title))
+    return make_response(jsonify(search_videos(title)))
 
 
 @app.route('/listennow/download/<string:video_id_param>/<string:client_token_param>', methods=['GET'])

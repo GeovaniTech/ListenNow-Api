@@ -1,17 +1,4 @@
-import requests
-
 from auth.configuration import ytmusic
-
-
-def convert_thumb_to_bytes(thumb):
-    try:
-        response = requests.get(thumb)
-        response.raise_for_status()  # Raise an exception if the request was not successful
-
-        image_bytes = response.content
-        return image_bytes
-    except:
-        print("ERROR: convert image to bytes")
 
 
 def get_small_thumb(video_id):

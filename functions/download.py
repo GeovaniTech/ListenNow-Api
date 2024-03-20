@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-import os
 import yt_dlp as youtube_dl
 
 from service.KeepSong import save_song
