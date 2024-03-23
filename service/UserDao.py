@@ -14,10 +14,10 @@ def exist_user_with_email(email):
     return True
 
 
-def save(email, password):
-    sql = "INSERT INTO user_listennow VALUES (%s, %s)"
+def save(uuid, email, password):
+    sql = "INSERT INTO user_listennow (id, email, password) VALUES (%s, %s, %s)"
     cur = get_cursor_db()
-    cur.execute(sql, (email, password))
+    cur.execute(sql, (uuid, email, password))
     conn.commit()
 
 

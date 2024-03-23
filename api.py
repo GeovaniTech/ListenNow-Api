@@ -59,7 +59,7 @@ def add_user():
             )
         )
 
-    save(user['email'], user['password'])
+    save(user['uuid'], user['email'], user['password'])
 
     return make_response(
         jsonify(
