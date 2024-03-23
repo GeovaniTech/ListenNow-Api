@@ -1,20 +1,19 @@
-import json
 import os
+import uuid
 
 from functions.search import *
 from utils.ThumbUtil import *
 from utils.databasePG import *
-from utils.BytesUtil import *
 
 
 def save(title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id):
     sql_query = """
-        INSERT INTO song (title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO song (title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id, song_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     cur = get_cursor_db()
-    cur.execute(sql_query, (title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id))
+    cur.execute(sql_query, (title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id, str(uuid.uuid4())))
     conn.commit()
 
 
