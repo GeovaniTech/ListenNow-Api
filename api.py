@@ -7,6 +7,7 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
+from service.SongDao import get_user_songs
 from service.UserDao import *
 
 app = Flask(__name__)
@@ -48,6 +49,17 @@ def download_route():
     Thread(target=partial_download).start()
 
     return render_template("index.html")
+
+
+@app.route('/listennow/user/songs', methods=['POST'])
+def get_user_songs_route():
+    user = request.json
+
+    return make_response(
+        jsonify(
+            get_user_songs(user['client_id'])
+        )
+    )
 
 
 @app.route('/listennow/user/add', methods=['POST'])
