@@ -35,14 +35,16 @@ def search_videos(title):
     )
 
 
-@app.route('/listennow/download/<string:video_id_param>/<string:client_token_param>', methods=['GET'])
-def download_route(video_id_param, client_token_param):
-    video_id = video_id_param
-    client_token = client_token_param
+@app.route('/listennow/download/song', methods=['POST'])
+def download_route():
+    params = request.json
+
+    video_id = params['video_id']
+    client_id = params['client_id']
 
     file_name = get_song_title(video_id)
 
-    partial_download = partial(download, video_id, file_name, client_token)
+    partial_download = partial(download, video_id, client_id, file_name)
     Thread(target=partial_download).start()
 
     return render_template("index.html")

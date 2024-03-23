@@ -15,7 +15,7 @@ def progress(value):
         print(value['filename'], value['_percent_str'], value['_eta_str'])
 
 
-def download(video_id, file_name, client_token):
+def download(video_id, client_id, file_name):
     ytdl_options = {
         'outtmpl': f'songs/{file_name}.%(ext)s',
         'format': 'bestaudio/best',
@@ -34,7 +34,7 @@ def download(video_id, file_name, client_token):
 
     file_path = f"songs/{file_name}.mp3"
 
-    save_song(file_path, video_id, file_name, client_token)
+    save_song(file_path, video_id, file_name, client_id)
 
 
 
