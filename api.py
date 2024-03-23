@@ -7,6 +7,7 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
+from service.UserDao import *
 
 app = Flask(__name__)
 
@@ -18,12 +19,20 @@ def home():
 
 @app.route('/listennow/search/<string:title>', methods=['GET'])
 def search_songs(title):
-    return make_response(jsonify(search(title)))
+    return make_response(
+        jsonify(
+            search(title)
+        )
+    )
 
 
 @app.route('/listennow/search/videos/<string:title>', methods=['GET'])
 def search_videos(title):
-    return make_response(jsonify(search_videos(title)))
+    return make_response(
+        jsonify(
+            search_videos(title)
+        )
+    )
 
 
 @app.route('/listennow/download/<string:video_id_param>/<string:client_token_param>', methods=['GET'])
@@ -37,6 +46,26 @@ def download_route(video_id_param, client_token_param):
     Thread(target=partial_download).start()
 
     return render_template("index.html")
+
+
+@app.route('/listennow/user/add', methods=['POST'])
+def add_user():
+    user = request.json
+
+    if exist_user_with_email(user['email']):
+        return make_response(
+            jsonify(
+                message="User already exists"
+            )
+        )
+
+    save(user['email'], user['password'])
+
+    return make_response(
+        jsonify(
+            message="User saved successfully"
+        )
+    )
 
 
 if __name__ == '__main__':
