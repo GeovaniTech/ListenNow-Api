@@ -65,3 +65,11 @@ def get_user_songs(uuid):
 
     return songs
 
+
+def delete_song(id):
+    sql = f"DELETE FROM song WHERE song_id = '{id}'"
+    cur = get_cursor_db()
+    cur.execute(sql)
+    conn.commit()
+
+

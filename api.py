@@ -7,7 +7,7 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
-from service.SongDao import get_user_songs
+from service.SongDao import get_user_songs, delete_song
 from service.UserDao import *
 
 app = Flask(__name__)
@@ -58,6 +58,19 @@ def get_user_songs_route():
     return make_response(
         jsonify(
             get_user_songs(user['client_id'])
+        )
+    )
+
+
+@app.route('/listennow/songs/delete', methods=['POST'])
+def delete_song_route():
+    song = request.json
+
+    delete_song(song['song_id'])
+
+    return make_response(
+        jsonify(
+            message="Song deleted successfully"
         )
     )
 
