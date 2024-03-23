@@ -20,3 +20,17 @@ def save(email, password):
     cur.execute(sql, (email, password))
     conn.commit()
 
+
+def valid_login(email, password):
+    sql = f"SELECT * FROM user_listennow WHERE email = '{email}' AND password = '{password}'"
+    cur = get_cursor_db()
+    cur.execute(sql)
+    users = cur.fetchall()
+
+    if len(users) == 0:
+        return False
+
+    return True
+
+
+

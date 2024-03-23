@@ -68,6 +68,24 @@ def add_user():
     )
 
 
+@app.route('/listennow/user/login', methods=['POST'])
+def login():
+    credentials = request.json
+
+    if valid_login(credentials['email'], credentials['password']):
+        return make_response(
+            jsonify(
+                message="Login is valid"
+            )
+        )
+
+    return make_response(
+        jsonify(
+            message="Login is not valid"
+        )
+    )
+
+
 if __name__ == '__main__':
     project_root = os.path.abspath(os.path.dirname(__file__))
 
