@@ -1,0 +1,78 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color:#4682b4;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Roboto", sans-serif;
+}
+
+h1 {
+    color: white;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.api-card {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    width: 200px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.api-card:hover {
+    transform: scale(1.1);
+}
+
+.api-card img {
+    margin-bottom: 10px;
+}
+
+.api-card p {
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+#img-listennow {
+    width: 90px;
+    height: 120px;
+}
+
+#img-investme {
+    width: 140px;
+    height: 120px;
+}
+
+#img-lecoffee {
+    width: 100px;
+    height: 120px;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none; 
+}
+

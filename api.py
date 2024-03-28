@@ -14,7 +14,12 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def home():
+def home_devpree():
+    return render_template("apis.html")
+
+
+@app.route('/listennow')
+def home_listennow():
     return render_template("home.html")
 
 
