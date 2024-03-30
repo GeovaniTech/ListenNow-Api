@@ -104,10 +104,15 @@ def add_user():
 def login():
     credentials = request.json
 
-    if valid_login(credentials['email'], credentials['password']):
+    email = credentials['email']
+    password = credentials['password']
+
+    if valid_login(email, password):
+        user_id = get_user_id_by_email(email)
+
         return make_response(
             jsonify(
-                message="Login is valid"
+                message=user_id
             )
         )
 

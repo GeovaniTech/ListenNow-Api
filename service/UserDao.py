@@ -33,4 +33,11 @@ def valid_login(email, password):
     return True
 
 
+def get_user_id_by_email(email):
+    sql = f"SELECT id FROM user_listennow WHERE email = '{email}'"
+    cur = get_cursor_db()
+    cur.execute(sql)
+    user_id = cur.fetchone()
+
+    return user_id
 
