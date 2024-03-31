@@ -40,7 +40,8 @@ def get_user_songs(uuid):
                lyrics, 
                small_thumb, 
                large_thumb, 
-               video_id 
+               video_id,
+               song_id 
                FROM song WHERE user_id = '{uuid}'"""
 
     cur = get_cursor_db()
@@ -58,7 +59,8 @@ def get_user_songs(uuid):
             "lyrics": song[3],
             "small_thumb": song[4],
             "large_thumb": song[5],
-            "video_id": song[6]
+            "video_id": song[6],
+            "song_id": song[7]
         }
 
         songs.append(json_song)
