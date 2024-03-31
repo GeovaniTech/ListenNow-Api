@@ -112,7 +112,7 @@ def login():
 
         return make_response(
             jsonify(
-                message=user_id
+                message=str(user_id[0])
             )
         )
 
