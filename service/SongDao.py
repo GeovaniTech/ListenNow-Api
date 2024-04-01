@@ -4,6 +4,7 @@ import uuid
 from functions.search import *
 from utils.ThumbUtil import *
 from utils.databasePG import *
+from utils.BytesUtil import bytes_to_base64
 
 
 def save(title, small_thumb, large_thumb, file, lyrics, video_id, artist, album, user_id):
@@ -41,7 +42,8 @@ def get_user_songs(uuid):
                small_thumb, 
                large_thumb, 
                video_id,
-               song_id 
+               song_id,
+               file
                FROM song WHERE user_id = '{uuid}'"""
 
     cur = get_cursor_db()
@@ -60,7 +62,8 @@ def get_user_songs(uuid):
             "small_thumb": song[4],
             "large_thumb": song[5],
             "video_id": song[6],
-            "song_id": song[7]
+            "song_id": song[7],
+            "file": bytes_to_base64(song[8])
         }
 
         songs.append(json_song)
