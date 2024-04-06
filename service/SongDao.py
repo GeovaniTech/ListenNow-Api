@@ -71,10 +71,21 @@ def get_user_songs(uuid):
     return songs
 
 
-def delete_song(id):
-    sql = f"DELETE FROM song WHERE song_id = '{id}'"
+def delete_song(song_id):
+    sql = f"DELETE FROM song WHERE song_id = '{song_id}'"
     cur = get_cursor_db()
     cur.execute(sql)
     conn.commit()
+
+
+def get_song_file(song_id):
+    sql = f"SELECT file FROM song where song_id = '{song_id}'"
+
+    cur = get_cursor_db()
+    cur.execute(sql)
+
+    file = cur.fetchone()
+
+    return bytes_to_base64(file[0])
 
 
