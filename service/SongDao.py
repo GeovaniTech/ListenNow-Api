@@ -42,8 +42,7 @@ def get_user_songs(uuid):
                small_thumb, 
                large_thumb, 
                video_id,
-               song_id,
-               file
+               song_id
                FROM song WHERE user_id = '{uuid}'"""
 
     cur = get_cursor_db()
@@ -62,8 +61,7 @@ def get_user_songs(uuid):
             "small_thumb": song[4],
             "large_thumb": song[5],
             "video_id": song[6],
-            "song_id": song[7],
-            "file": bytes_to_base64(song[8])
+            "song_id": song[7]
         }
 
         songs.append(json_song)
