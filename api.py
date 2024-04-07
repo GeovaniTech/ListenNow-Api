@@ -32,6 +32,18 @@ def search_songs(title):
     )
 
 
+@app.route('/listennow/songs/search', methods=['POST'])
+def search_songs_to_app():
+    params = request.json
+
+    return make_response(
+        jsonify(
+            search_to_app(params['search_for'])
+        )
+    )
+
+
+
 @app.route('/listennow/search/videos/<string:title>', methods=['GET'])
 def search_videos(title):
     return make_response(

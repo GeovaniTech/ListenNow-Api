@@ -5,6 +5,22 @@ def search(title):
     return ytmusic.search(title, "songs")
 
 
+def search_to_app(search_for):
+    songs = list()
+
+    for song in search(search_for):
+        json_song = {
+            "videoId": song['videoId'],
+            "title": song['title'],
+            "artist": song['artists'][0]['name'],
+            "thumb": song['thumbnails'][0]['url']
+        }
+
+        songs.append(json_song)
+
+    return songs
+
+
 def search_videos(title):
     return ytmusic.search(title, "videos")
 
