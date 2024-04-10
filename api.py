@@ -43,9 +43,8 @@ def search_songs_to_app():
     )
 
 
-
 @app.route('/listennow/search/videos/<string:title>', methods=['GET'])
-def search_videos(title):
+def search_videos_route(title):
     return make_response(
         jsonify(
             search_videos(title)
