@@ -5,7 +5,7 @@ If you want to use to your own project, you can just use the routes to search so
 
 Access the api [here](https://api.devpree.com.br)
 
-## Techlogies 
+## Technologies 
 + Python
 + Youtubemusicapi [Documentation](https://ytmusicapi.readthedocs.io/en/stable/)
 + Postgresql
