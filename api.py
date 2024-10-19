@@ -13,11 +13,6 @@ from service.UserDao import *
 app = Flask(__name__)
 
 
-@app.route('/')
-def home_devpree():
-    return render_template("apis.html")
-
-
 @app.route('/listennow')
 def home_listennow():
     return render_template("home.html")
@@ -32,6 +27,15 @@ def search_songs(title):
     )
 
 
+@app.route('/listennow/search/videos/<string:title>', methods=['GET'])
+def search_videos_route(title):
+    return make_response(
+        jsonify(
+            search_videos(title)
+        )
+    )
+
+
 @app.route('/listennow/songs/search', methods=['POST'])
 def search_songs_to_app():
     params = request.json
@@ -39,15 +43,6 @@ def search_songs_to_app():
     return make_response(
         jsonify(
             search_to_app(params['search_for'])
-        )
-    )
-
-
-@app.route('/listennow/search/videos/<string:title>', methods=['GET'])
-def search_videos_route(title):
-    return make_response(
-        jsonify(
-            search_videos(title)
         )
     )
 
@@ -104,45 +99,21 @@ def song_file_route():
 
 @app.route('/listennow/user/add', methods=['POST'])
 def add_user():
-    user = request.json
-
-    if exist_user_with_email(user['email']):
-        return make_response(
-            jsonify(
-                message="User already exists"
-            )
-        )
-
-    save(user['uuid'], user['email'], user['password'])
-
-    return make_response(
-        jsonify(
-            message="User saved successfully"
-        )
-    )
-
-
-@app.route('/listennow/user/login', methods=['POST'])
-def login():
-    credentials = request.json
-
-    email = credentials['email']
-    password = credentials['password']
-
-    if valid_login(email, password):
-        user_id = get_user_id_by_email(email)
+    try:
+        user = request.json
+        save(user['uuid'])
 
         return make_response(
             jsonify(
-                message=str(user_id[0])
+                message="Client saved successfully"
             )
         )
-
-    return make_response(
-        jsonify(
-            message="Login is not valid"
+    except Exception as e:
+        return make_response(
+            jsonify(
+                message=f"Failed to save client. Error: {e.args}"
+            )
         )
-    )
 
 
 if __name__ == '__main__':
