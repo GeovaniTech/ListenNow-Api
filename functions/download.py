@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import yt_dlp as youtube_dl
 
-from service.SongDao import save_song
+from service.SongDao import before_save_song
 
 base_url = "https://www.youtube.com/watch?v="
 
@@ -34,7 +34,7 @@ def download(video_id, client_id, file_name):
 
     file_path = f"songs/{file_name}.mp3"
 
-    save_song(file_path, video_id, file_name, client_id)
+    before_save_song(file_path, video_id, file_name, client_id)
 
 
 

@@ -7,8 +7,10 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
-from service.SongDao import get_user_songs, delete_song, get_song_file
+from service.ClientSongDao import save_client_song, exists_client_song
+from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database
 from service.UserDao import *
+from utils.MessageUtil import log_message_response
 
 app = Flask(__name__)
 
@@ -54,12 +56,20 @@ def download_route():
     video_id = params['video_id']
     client_id = params['client_id']
 
-    file_name = get_song_title(video_id)
+    if exists_song_in_database(video_id):
+        if exists_client_song(client_id, video_id):
+            log_message_response("Client already has song saved on the database")
+        else:
+            save_client_song(client_id, video_id)
 
-    partial_download = partial(download, video_id, client_id, file_name)
-    Thread(target=partial_download).start()
+        return log_message_response("Song already exists in database, skipping download.")
+    else:
+        file_name = get_song_title(video_id)
 
-    return render_template("index.html")
+        partial_download = partial(download, video_id, client_id, file_name)
+        Thread(target=partial_download).start()
+
+        return log_message_response(f"Download song: {video_id} has been started.")
 
 
 @app.route('/listennow/user/songs', methods=['POST'])
