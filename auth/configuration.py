@@ -1,3 +1,6 @@
-from ytmusicapi import YTMusic
+import ytmusicapi
+from auth.headers import headers
 
-ytmusic = YTMusic("auth/auth.json")
+
+credentials = ytmusicapi.setup(filepath="browser.json", headers_raw=headers)
+ytmusic = ytmusicapi.YTMusic(credentials)
