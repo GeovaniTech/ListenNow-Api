@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
 
         ssl_context = (
-        '/certs/certificate.crt', '/certs/key.key')
+        '/certs/certificate.cer', '/certs/key.key')
 
         options = {
             'bind': '0.0.0.0:8000',
