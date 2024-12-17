@@ -19,7 +19,7 @@ def download(video_id, client_id, file_name):
     ytdl_options = {
         'outtmpl': f'songs/{file_name}.%(ext)s',
         'format': 'bestaudio/best',
-        'ffmpeg_location': '/usr/bin/ffmpeg /usr/share/ffmpeg',
+        'ffmpeg_location': '/usr/bin/ffmpeg',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
