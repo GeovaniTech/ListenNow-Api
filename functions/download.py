@@ -23,6 +23,7 @@ def download(video_id, client_id, file_name):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
+            'ffmpeg_location': '/usr/bin/ffmpeg /usr/share/ffmpeg',
         }],
         'progress_hooks': [progress]
     }
