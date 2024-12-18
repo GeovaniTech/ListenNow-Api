@@ -2,18 +2,22 @@ import os
 
 from functions.search import *
 from service.ClientSongDao import save_client_song
-from utils.ThumbUtil import *
-from utils.databasePG import *
 from utils.BytesUtil import bytes_to_base64
+from utils.ThumbUtil import *
+from utils.databasePG import get_db_connection
 
+conn = None
 
 def save(video_id, name, artist, album, thumb, file, lyrics):
+    global conn
+    conn = get_db_connection()
+
     sql_query = """
         INSERT INTO song (video_id, name, artist, album, thumb, file, lyrics)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 
-    cur = get_cursor_db()
+    cur = conn.cursor()
     cur.execute(sql_query, (video_id, name, artist, album, thumb, file, lyrics))
     conn.commit()
     conn.close()
@@ -36,6 +40,9 @@ def before_save_song(file_path, video_id, file_name, client_id):
 
 
 def get_user_songs(uuid):
+    global conn
+    conn = get_db_connection()
+
     sql = f"""
         SELECT video_id,
                name, 
@@ -47,10 +54,10 @@ def get_user_songs(uuid):
         INNER JOIN client_song as cs ON cs.song_id = song.video_id 
         WHERE cs.client_id = '{uuid}'"""
 
-    cur = get_cursor_db()
+    cur = conn.cursor()
     cur.execute(sql)
-
     songs_db = cur.fetchall()
+    conn.close()
 
     songs = list()
 
@@ -70,27 +77,38 @@ def get_user_songs(uuid):
 
 
 def delete_song(song_id):
+    global conn
+    conn = get_db_connection()
+
     sql = f"DELETE FROM song WHERE song_id = '{song_id}'"
-    cur = get_cursor_db()
+
+    cur = conn.cursor()
     cur.execute(sql)
     conn.commit()
     conn.close()
 
 
 def get_song_file(video_id):
+    global conn
+    conn = get_db_connection()
+
     sql = f"SELECT file FROM song where video_id = '{video_id}'"
 
-    cur = get_cursor_db()
+    cur = conn.cursor()
     cur.execute(sql)
 
     file = cur.fetchone()
+    conn.close()
 
     return bytes_to_base64(file[0])
 
 def exists_song_in_database(video_id):
+    global conn
+    conn = get_db_connection()
+
     sql = f"SELECT video_id FROM song where video_id = '{video_id}'"
 
-    cur = get_cursor_db()
+    cur = conn.cursor()
     cur.execute(sql)
     song_id = cur.fetchone()
     conn.close()
