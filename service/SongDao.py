@@ -36,15 +36,15 @@ def before_save_song(file_path, video_id, file_name, client_id):
 
 def get_user_songs(uuid):
     sql = f"""
-        SELECT title, 
+        SELECT video_id,
+               name, 
                artist, 
                album, 
-               lyrics, 
-               small_thumb, 
-               large_thumb, 
-               video_id,
-               song_id
-               FROM song WHERE user_id = '{uuid}'"""
+               lyrics,
+               thumb
+        FROM song
+        INNER JOIN client_song as cs ON cs.song_id = song.video_id 
+        WHERE cs.client_id = '{uuid}'"""
 
     cur = get_cursor_db()
     cur.execute(sql)
@@ -55,14 +55,12 @@ def get_user_songs(uuid):
 
     for song in songs_db:
         json_song = {
-            "title": song[0],
-            "artist": song[1],
-            "album": song[2],
-            "lyrics": song[3],
-            "small_thumb": song[4],
-            "large_thumb": song[5],
-            "video_id": song[6],
-            "song_id": song[7]
+            "video_id": song[0],
+            "title": song[1],
+            "artist": song[2],
+            "album": song[3],
+            "lyrics": song[4],
+            "thumb": song[5],
         }
 
         songs.append(json_song)
@@ -77,8 +75,8 @@ def delete_song(song_id):
     conn.commit()
 
 
-def get_song_file(song_id):
-    sql = f"SELECT file FROM song where song_id = '{song_id}'"
+def get_song_file(video_id):
+    sql = f"SELECT file FROM song where video_id = '{video_id}'"
 
     cur = get_cursor_db()
     cur.execute(sql)

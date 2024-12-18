@@ -102,7 +102,7 @@ def song_file_route():
 
     return make_response(
         jsonify(
-            file=str(get_song_file(song['song_id']))
+            file=str(get_song_file(song['videoId']))
         )
     )
 
