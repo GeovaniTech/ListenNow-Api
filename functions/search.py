@@ -6,19 +6,20 @@ def search(title):
 
 
 def search_to_app(search_for):
-    songs = list()
+    if search_for is not None and len(str(search_for)) != 0:
+        songs = list()
 
-    for song in search(search_for):
-        json_song = {
-            "videoId": song['videoId'],
-            "title": song['title'],
-            "artist": song['artists'][0]['name'],
-            "thumb": song['thumbnails'][0]['url']
-        }
+        for song in search(search_for):
+            json_song = {
+                "videoId": song['videoId'],
+                "title": song['title'],
+                "artist": song['artists'][0]['name'],
+                "thumb": song['thumbnails'][0]['url']
+            }
 
-        songs.append(json_song)
+            songs.append(json_song)
 
-    return songs
+        return songs
 
 
 def search_videos(title):
