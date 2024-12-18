@@ -102,6 +102,41 @@ def get_song_file(video_id):
 
     return bytes_to_base64(file[0])
 
+
+def find_song_by_id_db(video_id):
+    global conn
+    conn = get_db_connection()
+
+    sql = f"""
+            SELECT video_id,
+               name, 
+               artist, 
+               album, 
+               lyrics,
+               thumb
+               FROM song
+               WHERE video_id = '{video_id}'
+    """
+
+    cur = conn.cursor()
+    cur.execute(sql)
+    song = cur.fetchone()
+
+    if song is not None:
+        json_song = {
+            "video_id": song[0],
+            "title": song[1],
+            "artist": song[2],
+            "album": song[3],
+            "lyrics": song[4],
+            "thumb": song[5],
+        }
+
+        return json_song
+    else:
+        return None
+
+
 def exists_song_in_database(video_id):
     global conn
     conn = get_db_connection()

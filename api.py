@@ -8,7 +8,7 @@ from gunicorn.app.base import BaseApplication
 from functions.download import download
 from functions.search import *
 from service.ClientSongDao import save_client_song, exists_client_song
-from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database
+from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response
 
@@ -105,6 +105,13 @@ def song_file_route():
             file=str(get_song_file(song['videoId']))
         )
     )
+
+
+@app.route('/listennow/songs/find', methods=['POST'])
+def find_song_by_id():
+    video_id = request.json['videoId']
+
+    return jsonify(find_song_by_id_db(video_id))
 
 
 @app.route('/listennow/user/add', methods=['POST'])
