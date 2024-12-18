@@ -41,19 +41,19 @@ def get_lyrics(video_id):
 
         return lyrics
     except Exception:
-        return "Not Found"
+        return "Lyrics Not Found"
 
 
 def get_artist(video_id):
     try:
         return str(ytmusic.get_artist(ytmusic.get_song(video_id)['videoDetails']['channelId'])['name'])
     except Exception:
-        return "Not Found"
+        return "Artist Not Found"
 
 
 def get_album(video_id):
     try:
         return str(ytmusic.get_watch_playlist(video_id)['tracks'][0]['album']['name'])
     except Exception:
-        return "Not Found"
+        return "Album Not Found"
 
