@@ -92,8 +92,8 @@ def exists_song_in_database(video_id):
 
     cur = get_cursor_db()
     cur.execute(sql)
-
     song_id = cur.fetchone()
+    conn.close()
 
     if song_id is not None:
         return True
