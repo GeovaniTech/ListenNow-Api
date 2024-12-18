@@ -1,5 +1,3 @@
-import uuid
-
 from utils.databasePG import get_cursor_db, conn
 
 
@@ -21,4 +19,5 @@ def save(client_id):
     cur = get_cursor_db()
     cur.execute(sql, (client_id,))
     conn.commit()
+    conn.close()
 

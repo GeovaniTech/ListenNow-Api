@@ -16,6 +16,7 @@ def save(video_id, name, artist, album, thumb, file, lyrics):
     cur = get_cursor_db()
     cur.execute(sql_query, (video_id, name, artist, album, thumb, file, lyrics))
     conn.commit()
+    conn.close()
 
 
 def before_save_song(file_path, video_id, file_name, client_id):
@@ -73,6 +74,7 @@ def delete_song(song_id):
     cur = get_cursor_db()
     cur.execute(sql)
     conn.commit()
+    conn.close()
 
 
 def get_song_file(video_id):

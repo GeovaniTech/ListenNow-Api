@@ -13,6 +13,7 @@ def save_client_song(client_id, song_id):
     cur = get_cursor_db()
     cur.execute(sql_query, (str(uuid.uuid4()), song_id, client_id, datetime.date.today()))
     conn.commit()
+    conn.close()
 
 
 def exists_client_song(client_id, song_id):
