@@ -155,9 +155,9 @@ def get_ids_songs_user():
 def copy_songs_from_another_user():
     try:
         user_receiver = request.json['userReceiver']
-        user_with_songs = request.json['userWithSongs']
+        songs_ids = request.json['songsIds']
 
-        insert_songs_from_another_user(user_receiver, user_with_songs)
+        insert_songs_from_another_user(user_receiver, songs_ids)
 
         return make_response(
             jsonify(message = "code: 2")

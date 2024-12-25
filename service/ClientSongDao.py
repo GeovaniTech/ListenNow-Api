@@ -39,11 +39,9 @@ def get_ids_songs_by_user(id_user_to_receive, id_user_with_songs):
     return fetch_song_ids(id_user_to_receive, id_user_with_songs)
 
 
-def insert_songs_from_another_user(id_user_to_receive, id_user_with_songs):
-    ids = fetch_song_ids(id_user_to_receive, id_user_with_songs)
-
+def insert_songs_from_another_user(id_user_to_receive, ids):
     for song_id in ids:
-        save_client_song(id_user_to_receive, song_id[0])
+        save_client_song(id_user_to_receive, song_id)
 
 
 def fetch_song_ids(id_user_to_receive, id_user_with_songs):
