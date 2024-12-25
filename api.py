@@ -7,7 +7,7 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
-from service.ClientSongDao import save_client_song, exists_client_song
+from service.ClientSongDao import save_client_song, exists_client_song, get_qtde_songs_by_user
 from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response
@@ -128,6 +128,23 @@ def add_user():
     except Exception as e:
         return log_message_response(
             "code: 1",
+            e.args
+        )
+
+
+@app.route("/listennow/songs/qtde", methods=['POST'])
+def get_qtde_songs_user():
+    user_id = request.json['userId']
+
+    try:
+        return make_response(
+            jsonify(
+                qtde = get_qtde_songs_by_user(user_id)
+            )
+        )
+    except Exception as e:
+        return log_message_response(
+            f"Error trying to get qtde songs for user {user_id}",
             e.args
         )
 

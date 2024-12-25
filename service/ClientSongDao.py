@@ -32,3 +32,17 @@ def exists_client_song(client_id, song_id):
     client_song_id = cur.fetchone()
 
     return client_song_id is not None
+
+
+def get_qtde_songs_by_user(user_id):
+    global conn
+    conn =  get_db_connection()
+
+    sql = f"SELECT COUNT(id) FROM client_song WHERE client_id = '{user_id}'"
+
+    cur = conn.cursor()
+    cur.execute(sql)
+
+    qtde = cur.fetchone()
+
+    return qtde[0]
