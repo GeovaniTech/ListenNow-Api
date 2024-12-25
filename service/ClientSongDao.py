@@ -1,5 +1,6 @@
 import datetime
 import uuid
+import re
 
 from utils.databasePG import get_db_connection
 
@@ -35,6 +36,12 @@ def exists_client_song(client_id, song_id):
 
 
 def get_qtde_songs_by_user(user_id):
+    is_valid_uuid = re.match("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", user_id)
+
+    if not is_valid_uuid:
+        return 0
+
+
     global conn
     conn =  get_db_connection()
 
