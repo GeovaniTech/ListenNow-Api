@@ -13,3 +13,12 @@ def log_message_response(message):
                 message = message
             )
         )
+
+def log_message_response(message, error):
+    print(message + f"Error: {error}")
+
+    return make_response(
+            jsonify(
+                message = message
+            )
+        )

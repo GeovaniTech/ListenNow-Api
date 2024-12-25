@@ -126,10 +126,9 @@ def add_user():
             )
         )
     except Exception as e:
-        return make_response(
-            jsonify(
-                message=f"Failed to save client. Error: {e.args}"
-            )
+        return log_message_response(
+            "code: 1",
+            e.args
         )
 
 
