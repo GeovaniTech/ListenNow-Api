@@ -7,7 +7,8 @@ from gunicorn.app.base import BaseApplication
 
 from functions.download import download
 from functions.search import *
-from service.ClientSongDao import save_client_song, exists_client_song, get_qtde_songs_by_user
+from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
+    insert_songs_from_another_user
 from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response
@@ -132,21 +133,42 @@ def add_user():
         )
 
 
-@app.route("/listennow/songs/qtde", methods=['POST'])
-def get_qtde_songs_user():
-    user_id = request.json['userId']
+@app.route("/listennow/songs/ids", methods=['POST'])
+def get_ids_songs_user():
+    user_receiver = request.json['userReceiver']
+    user_with_songs = request.json['userWithSongs']
 
     try:
         return make_response(
             jsonify(
-                qtde = get_qtde_songs_by_user(user_id)
+                songsIds = get_ids_songs_by_user(user_receiver, user_with_songs)
             )
         )
     except Exception as e:
         return log_message_response(
-            f"Error trying to get qtde songs for user {user_id}",
+            f"Error trying to get ids songs for user {user_with_songs}",
             e.args
         )
+
+
+@app.route("/listennow/songs/copy", methods=['POST'])
+def copy_songs_from_another_user():
+    try:
+        user_receiver = request.json['userReceiver']
+        user_with_songs = request.json['userWithSongs']
+
+        insert_songs_from_another_user(user_receiver, user_with_songs)
+
+        return make_response(
+            jsonify(message = "code: 2")
+        )
+    except Exception as e:
+        return log_message_response(
+            f"Error trying to copy songs from another user.",
+            e.args
+        )
+
+
 
 
 if __name__ == '__main__':

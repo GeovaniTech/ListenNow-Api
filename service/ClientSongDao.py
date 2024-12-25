@@ -35,21 +35,41 @@ def exists_client_song(client_id, song_id):
     return client_song_id is not None
 
 
-def get_qtde_songs_by_user(user_id):
-    is_valid_uuid = re.match("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", user_id)
+def get_ids_songs_by_user(id_user_to_receive, id_user_with_songs):
+    return fetch_song_ids(id_user_to_receive, id_user_with_songs)
 
+
+def insert_songs_from_another_user(id_user_to_receive, id_user_with_songs):
+    ids = fetch_song_ids(id_user_to_receive, id_user_with_songs)
+
+    for song_id in ids:
+        save_client_song(id_user_to_receive, song_id[0])
+
+
+def fetch_song_ids(id_user_to_receive, id_user_with_songs):
+    is_valid_uuid = re.match("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", id_user_with_songs)
     if not is_valid_uuid:
-        return 0
-
+        return []
 
     global conn
-    conn =  get_db_connection()
+    conn = get_db_connection()
 
-    sql = f"SELECT COUNT(id) FROM client_song WHERE client_id = '{user_id}'"
+    sql = """
+        SELECT cs.song_id
+        FROM client_song AS cs
+        WHERE cs.client_id = %s
+        AND NOT EXISTS (
+            SELECT 1
+            FROM client_song AS css
+            WHERE css.client_id = %s
+            AND cs.song_id = css.song_id
+        )
+    """
 
     cur = conn.cursor()
-    cur.execute(sql)
+    cur.execute(sql, (id_user_with_songs, id_user_to_receive))
 
-    qtde = cur.fetchone()
+    ids = cur.fetchall()
+    song_ids = [song_id[0] for song_id in ids]
 
-    return qtde[0]
+    return song_ids
