@@ -191,15 +191,9 @@ if __name__ == '__main__':
             def load(self):
                 return self.application
 
-
-        ssl_context = (
-        '/certs/certificate.crt', '/certs/key.key')
-
         options = {
             'bind': '0.0.0.0:8000',
-            'workers': 4,
-            'certfile': ssl_context[0],
-            'keyfile': ssl_context[1],
+            'workers': 4
         }
 
         StandaloneApplication(app, options).run()
