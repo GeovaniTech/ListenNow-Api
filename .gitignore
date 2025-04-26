@@ -1,6 +1,3 @@
-databasePG.py
 __pycache__
 .idea
-auth.json
-browser.json
-headers.py
+.env

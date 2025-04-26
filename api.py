@@ -12,6 +12,7 @@ from service.ClientSongDao import save_client_song, exists_client_song, get_ids_
 from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response
+from config.configuration import configure_env
 
 app = Flask(__name__)
 
@@ -169,9 +170,9 @@ def copy_songs_from_another_user():
         )
 
 
-
-
 if __name__ == '__main__':
+    configure_env()
+
     project_root = os.path.abspath(os.path.dirname(__file__))
 
     if project_root == '/projects/ListenNow-Api':

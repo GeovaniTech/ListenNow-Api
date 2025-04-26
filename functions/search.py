@@ -1,4 +1,4 @@
-from auth.configuration import ytmusic
+from config.configuration import ytmusic
 
 
 def search(title):
