@@ -5,14 +5,15 @@ from threading import Thread
 from flask import Flask, jsonify, render_template, make_response, request
 from gunicorn.app.base import BaseApplication
 
+from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
     insert_songs_from_another_user
 from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
-from utils.MessageUtil import log_message_response
-from config.configuration import configure_env
+from utils.MessageUtil import log_message_response, log_message
+from service.AppVersionDao import get_latest_version
 
 app = Flask(__name__)
 
@@ -169,6 +170,20 @@ def copy_songs_from_another_user():
             e.args
         )
 
+
+@app.route("/listennow/app/last/version", methods=['GET'])
+def get_latest_app_version():
+    try:
+        return make_response(
+            jsonify(
+                get_latest_version()
+            )
+        )
+    except Exception as e:
+        return log_message_response(
+            "Error trying to get ListenNow latest version.",
+            e.args
+        )
 
 if __name__ == '__main__':
     configure_env()
