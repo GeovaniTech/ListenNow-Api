@@ -15,7 +15,7 @@ def log_message_response(message):
         )
 
 
-def log_message_response(message, error):
+def log_message_response_error(message, error):
     print(message + f"Error: {error}")
 
     return make_response(

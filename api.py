@@ -12,7 +12,7 @@ from service.ClientSongDao import save_client_song, exists_client_song, get_ids_
     insert_songs_from_another_user
 from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
-from utils.MessageUtil import log_message_response, log_message
+from utils.MessageUtil import log_message_response, log_message, log_message_response_error
 from service.AppVersionDao import get_latest_version
 
 app = Flask(__name__)
@@ -129,7 +129,7 @@ def add_user():
             )
         )
     except Exception as e:
-        return log_message_response(
+        return log_message_response_error(
             "code: 1",
             e.args
         )
@@ -147,7 +147,7 @@ def get_ids_songs_user():
             )
         )
     except Exception as e:
-        return log_message_response(
+        return log_message_response_error(
             f"Error trying to get ids songs for user {user_with_songs}",
             e.args
         )
@@ -165,7 +165,7 @@ def copy_songs_from_another_user():
             jsonify(message = "code: 2")
         )
     except Exception as e:
-        return log_message_response(
+        return log_message_response_error(
             f"Error trying to copy songs from another user.",
             e.args
         )
@@ -180,7 +180,7 @@ def get_latest_app_version():
             )
         )
     except Exception as e:
-        return log_message_response(
+        return log_message_response_error(
             "Error trying to get ListenNow latest version.",
             e.args
         )
