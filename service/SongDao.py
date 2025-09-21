@@ -115,8 +115,10 @@ def find_song_by_id_db(video_id):
                artist, 
                album, 
                lyrics,
-               thumb
+               thumb,
+               cs.request_date
                FROM song
+               INNER JOIN client_song as cs ON cs.song_id = song.video_id 
                WHERE video_id = '{video_id}'
     """
 
@@ -132,6 +134,7 @@ def find_song_by_id_db(video_id):
             "album": song[3],
             "lyrics": song[4],
             "thumb": song[5],
+            "request_date": song[6]
         }
 
         return json_song
