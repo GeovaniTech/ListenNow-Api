@@ -16,7 +16,7 @@ def save_client_song(client_id, song_id):
     """
 
     cur = conn.cursor()
-    cur.execute(sql_query, (str(uuid.uuid4()), song_id, client_id, datetime.date.today()))
+    cur.execute(sql_query, (str(uuid.uuid4()), song_id, client_id, datetime.datetime.today()))
     conn.commit()
     conn.close()
 
