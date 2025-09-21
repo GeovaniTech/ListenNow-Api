@@ -113,8 +113,9 @@ def song_file_route():
 @app.route('/listennow/songs/find', methods=['POST'])
 def find_song_by_id():
     video_id = request.json['videoId']
+    client_id = request.json['clientId']
 
-    return jsonify(find_song_by_id_db(video_id))
+    return jsonify(find_song_by_id_db(video_id, client_id))
 
 
 @app.route('/listennow/user/add', methods=['POST'])

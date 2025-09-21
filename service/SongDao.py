@@ -105,7 +105,7 @@ def get_song_file(video_id):
     return bytes_to_base64(file[0])
 
 
-def find_song_by_id_db(video_id):
+def find_song_by_id_db(video_id, client_id):
     global conn
     conn = get_db_connection()
 
@@ -120,6 +120,7 @@ def find_song_by_id_db(video_id):
                FROM song
                INNER JOIN client_song as cs ON cs.song_id = song.video_id 
                WHERE video_id = '{video_id}'
+               AND cs.client_id = '{client_id}'
     """
 
     cur = conn.cursor()
