@@ -49,7 +49,8 @@ def get_user_songs(uuid):
                artist, 
                album, 
                lyrics,
-               thumb
+               thumb,
+               cs.request_date
         FROM song
         INNER JOIN client_song as cs ON cs.song_id = song.video_id 
         WHERE cs.client_id = '{uuid}'"""
@@ -69,6 +70,7 @@ def get_user_songs(uuid):
             "album": song[3],
             "lyrics": song[4],
             "thumb": song[5],
+            "request_date": song[6]
         }
 
         songs.append(json_song)
