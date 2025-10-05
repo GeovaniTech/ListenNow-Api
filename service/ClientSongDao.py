@@ -71,3 +71,14 @@ def fetch_song_ids(id_user_to_receive, id_user_with_songs):
     song_ids = [song_id[0] for song_id in ids]
 
     return song_ids
+
+
+def delete_client_song(client_id, song_id):
+    global conn
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    sql = "DELETE FROM client_song AS cs WHERE cs.client_id = %s AND cs.song_id = %s"
+
+    cur.execute(sql, (client_id, song_id))

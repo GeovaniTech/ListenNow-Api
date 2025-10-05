@@ -9,8 +9,8 @@ from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
-    insert_songs_from_another_user
-from service.SongDao import get_user_songs, delete_song, get_song_file, exists_song_in_database, find_song_by_id_db
+    insert_songs_from_another_user, delete_client_song
+from service.SongDao import get_user_songs, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response, log_message, log_message_response_error
 from service.AppVersionDao import get_latest_version
@@ -86,17 +86,16 @@ def get_user_songs_route():
     )
 
 
-@app.route('/listennow/songs/delete', methods=['POST'])
-def delete_song_route():
-    song = request.json
+@app.route('/listennow/user/songs/delete', methods=['DELETE'])
+def user_songs_delete_route():
+    try:
+        params = request.json
 
-    delete_song(song['song_id'])
+        delete_client_song(params['clientId'], params['videoId'])
 
-    return make_response(
-        jsonify(
-            message="Song deleted successfully"
-        )
-    )
+        return log_message_response("Song deleted from user account successfully.")
+    except Exception as e:
+        return log_message_response_error("Failed to delete song from user account", e)
 
 
 @app.route('/listennow/songs/file', methods=['POST'])

@@ -78,18 +78,6 @@ def get_user_songs(uuid):
     return songs
 
 
-def delete_song(song_id):
-    global conn
-    conn = get_db_connection()
-
-    sql = f"DELETE FROM song WHERE song_id = '{song_id}'"
-
-    cur = conn.cursor()
-    cur.execute(sql)
-    conn.commit()
-    conn.close()
-
-
 def get_song_file(video_id):
     global conn
     conn = get_db_connection()
