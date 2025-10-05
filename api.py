@@ -86,7 +86,7 @@ def get_user_songs_route():
     )
 
 
-@app.route('/listennow/user/songs/delete', methods=['DELETE'])
+@app.route('/listennow/user/songs/delete', methods=['POST'])
 def user_songs_delete_route():
     try:
         params = request.json
