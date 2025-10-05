@@ -79,6 +79,14 @@ def delete_client_song(client_id, song_id):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    sql = "DELETE FROM client_song AS cs WHERE cs.client_id = %s AND cs.song_id = %s"
+    try:
+        sql = "DELETE FROM client_song AS cs WHERE cs.client_id = %s AND cs.song_id = %s"
 
-    cur.execute(sql, (client_id, song_id))
+        cur.execute(sql, (client_id, song_id))
+    except Exception as e:
+        conn.rollback()
+        print(f"Error deleting client song: {e}")
+    finally:
+        cur.close()
+        conn.close()
+
