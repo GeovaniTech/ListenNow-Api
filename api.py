@@ -12,7 +12,7 @@ from service.ClientSongDao import save_client_song, exists_client_song, get_ids_
     insert_songs_from_another_user, delete_client_song
 from service.SongDao import get_user_songs, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
-from utils.MessageUtil import log_message_response, log_message, log_message_response_error
+from utils.MessageUtil import log_message_response, log_message_response_error
 from service.AppVersionDao import get_latest_version
 
 app = Flask(__name__)
@@ -77,11 +77,17 @@ def download_route():
 
 @app.route('/listennow/user/songs', methods=['POST'])
 def get_user_songs_route():
-    user = request.json
+    params = request.json
+
+    user_id = params['client_id']
+    ignore_ids = None
+
+    if "ignoreIds" in params:
+        ignore_ids = params['ignoreIds']
 
     return make_response(
         jsonify(
-            get_user_songs(user['client_id'])
+            get_user_songs(user_id, ignore_ids)
         )
     )
 

@@ -39,9 +39,11 @@ def before_save_song(file_path, video_id, file_name, client_id):
     os.remove(file_path)
 
 
-def get_user_songs(uuid):
+def get_user_songs(uuid, ignore_ids):
     global conn
     conn = get_db_connection()
+
+    params = list()
 
     sql = f"""
         SELECT video_id,
@@ -55,8 +57,13 @@ def get_user_songs(uuid):
         INNER JOIN client_song as cs ON cs.song_id = song.video_id 
         WHERE cs.client_id = '{uuid}'"""
 
+    if ignore_ids:
+        placeholders = ','.join(['%s'] * len(ignore_ids))
+        sql += f" AND cs.song_id NOT IN ({placeholders})"
+        params.extend(ignore_ids)
+
     cur = conn.cursor()
-    cur.execute(sql)
+    cur.execute(sql, params)
     songs_db = cur.fetchall()
     conn.close()
 
