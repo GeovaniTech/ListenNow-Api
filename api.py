@@ -17,6 +17,24 @@ from service.AppVersionDao import get_latest_version
 
 app = Flask(__name__)
 
+PUBLIC_ROUTES = ["home_listennow"]
+
+@app.before_request
+def verify_api_key():
+    api_key = request.headers.get('Api-Key')
+
+    if request.endpoint in PUBLIC_ROUTES:
+        return None
+
+    if api_key is None or os.getenv("API_KEY") != api_key:
+        return jsonify(message = "API key is invalid"), 401
+
+    return None
+
+
+@app.route('/')
+def index():
+    return make_response()
 
 @app.route('/listennow')
 def home_listennow():
