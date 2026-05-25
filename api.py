@@ -8,6 +8,7 @@ from gunicorn.app.base import BaseApplication
 from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
+from service import PlaylistDao
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
     insert_songs_from_another_user, delete_client_song
 from service.SongDao import get_user_songs, get_song_file, exists_song_in_database, find_song_by_id_db
@@ -208,6 +209,24 @@ def get_latest_app_version():
             "Error trying to get ListenNow latest version.",
             e.args
         )
+
+
+@app.route("/listennow/playlist/create", methods=['POST'])
+def create_playlist():
+    try:
+        playlist_name = request.json['playlistName']
+        client_id = request.json['clientId']
+
+        playlist_id = PlaylistDao.create_playlist(playlist_name, client_id)
+
+        return make_response(
+            jsonify(
+                playlist_id = playlist_id
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to create playlist", e), 500
+
 
 if __name__ == '__main__':
     configure_env()
