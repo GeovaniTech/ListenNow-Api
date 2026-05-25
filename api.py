@@ -262,6 +262,24 @@ def delete_playlist():
         return log_message_response_error("Failed to delete playlist", e), 500
 
 
+
+@app.route("/listennow/playlist/add/songs", methods=['PUT'])
+def insert_songs_into_playlist():
+    try:
+        playlist_id = request.json['playlistId']
+        songs = request.json['songs']
+
+        PlaylistDao.insert_songs_into_playlist(playlist_id, songs)
+
+        return make_response(
+            jsonify(
+                message = "Songs Added Successfully"
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to add songs to playlist", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
