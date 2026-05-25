@@ -74,3 +74,19 @@ def insert_songs_into_playlist(playlist_id, songs):
         cur.close()
         conn.close()
 
+
+def delete_songs_from_playlist(playlist_id, songs):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        for song in songs:
+            sql = "DELETE FROM playlist_songs WHERE playlist_id = %s AND video_id = %s"
+            cur.execute(sql, (playlist_id, song))
+            conn.commit()
+    except Exception:
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+
