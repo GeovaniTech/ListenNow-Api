@@ -25,3 +25,18 @@ def create_playlist(playlist_name, client_id):
     return playlist_id
 
 
+def update_playlist(playlist_id, name):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        sql = "UPDATE playlist SET name = %s WHERE id = %s"
+
+        cur.execute(sql, (name, playlist_id))
+        conn.commit()
+    except Exception:
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+

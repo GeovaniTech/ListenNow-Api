@@ -228,6 +228,24 @@ def create_playlist():
         return log_message_response_error("Failed to create playlist", e), 500
 
 
+@app.route("/listennow/playlist/update", methods=['POST'])
+def update_playlist():
+    try:
+        playlist_id = request.json['playlistId']
+        playlist_name = request.json['playlistName']
+
+        PlaylistDao.update_playlist(playlist_id, playlist_name)
+
+        return make_response(
+            jsonify(
+                playlist_id = playlist_id
+            )
+        )
+
+    except Exception as e:
+        return log_message_response_error("Failed to update playlist", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
