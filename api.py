@@ -211,7 +211,7 @@ def get_latest_app_version():
         )
 
 
-@app.route("/listennow/playlist/create", methods=['POST'])
+@app.route("/listennow/playlist/create", methods=['PUT'])
 def create_playlist():
     try:
         playlist_name = request.json['playlistName']
@@ -228,7 +228,7 @@ def create_playlist():
         return log_message_response_error("Failed to create playlist", e), 500
 
 
-@app.route("/listennow/playlist/update", methods=['POST'])
+@app.route("/listennow/playlist/update", methods=['PATCH'])
 def update_playlist():
     try:
         playlist_id = request.json['playlistId']
@@ -244,6 +244,22 @@ def update_playlist():
 
     except Exception as e:
         return log_message_response_error("Failed to update playlist", e), 500
+
+
+@app.route("/listennow/playlist/delete", methods=['DELETE'])
+def delete_playlist():
+    try:
+        playlist_id = request.json['playlistId']
+
+        PlaylistDao.delete_playlist(playlist_id)
+
+        return make_response(
+            jsonify(
+                playlist_id = playlist_id
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to delete playlist", e), 500
 
 
 if __name__ == '__main__':
