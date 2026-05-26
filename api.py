@@ -221,7 +221,7 @@ def create_playlist():
 
         return make_response(
             jsonify(
-                playlist_id = playlist_id
+                playlistId = playlist_id
             )
         )
     except Exception as e:
