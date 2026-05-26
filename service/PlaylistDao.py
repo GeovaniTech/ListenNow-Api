@@ -101,7 +101,6 @@ def get_playlists_from_user(client_id):
 
         cur.execute(sql)
         playlists_response = cur.fetchall()
-        print(playlists_response)
 
         playlists = []
 
