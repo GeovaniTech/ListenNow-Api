@@ -1,4 +1,6 @@
+import traceback
 import uuid
+from encodings import palmos
 
 from utils.databasePG import get_db_connection
 
@@ -89,3 +91,32 @@ def delete_songs_from_playlist(playlist_id, songs):
         cur.close()
         conn.close()
 
+
+
+def get_playlists_from_user(client_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        sql = f"SELECT id, name FROM playlist WHERE client_id = '{client_id}'"
+
+        cur.execute(sql)
+        playlists_response = cur.fetchall()
+        print(playlists_response)
+
+        playlists = []
+
+        if playlists_response is not None:
+            for playlist in playlists_response:
+                print(playlist)
+                playlists.append({
+                    "id": playlist[0],
+                    "name": playlist[1],
+                })
+        return playlists
+    except Exception as e:
+        print(e.args)
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()

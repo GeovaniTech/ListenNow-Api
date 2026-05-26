@@ -297,6 +297,21 @@ def delete_songs_from_playlist():
         return log_message_response_error("Failed to delete songs from playlist", e), 500
 
 
+@app.route("/listennow/playlist/get", methods=['POST'])
+def get_playlists_from_user():
+    try:
+        client_id = request.json['clientId']
+        print(client_id)
+        # playlist_id = request.json['playlistId']
+        playlists = PlaylistDao.get_playlists_from_user(client_id)
+
+        return make_response(
+            jsonify(playlists)
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to get playlists from user", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
