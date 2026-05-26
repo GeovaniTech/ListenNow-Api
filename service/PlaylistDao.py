@@ -1,7 +1,5 @@
 import uuid
 
-from psycopg2._psycopg import cursor
-
 from utils.databasePG import get_db_connection
 
 def create_playlist(playlist_name, client_id):
