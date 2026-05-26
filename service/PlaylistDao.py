@@ -46,10 +46,11 @@ def delete_playlist(playlist_id):
     cur = conn.cursor()
 
     try:
-        sql = "DELETE FROM playlist WHERE id = %s"
-        cur.execute(sql, (playlist_id,))
+        sql = "DELETE FROM playlist_songs WHERE playlist_id = %s; DELETE FROM playlist WHERE id = %s"
+        cur.execute(sql, (playlist_id, playlist_id))
         conn.commit()
-    except Exception:
+    except Exception as e:
+        print(e.args)
         conn.rollback()
     finally:
         cur.close()
