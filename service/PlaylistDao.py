@@ -1,8 +1,7 @@
-import traceback
 import uuid
-from encodings import palmos
 
 from utils.databasePG import get_db_connection
+
 
 def create_playlist(playlist_name, client_id):
     playlist_id = None
