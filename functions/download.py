@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import os
+
 import yt_dlp as youtube_dl
 
 from service.SongDao import before_save_song
@@ -25,7 +27,8 @@ def download(video_id, client_id, file_name):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        'progress_hooks': [progress]
+        'progress_hooks': [progress],
+        'js_runtimes': {'node': {'path': os.getenv('NODE_PATH')}},
     }
 
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
