@@ -92,19 +92,26 @@ def delete_songs_from_playlist(playlist_id, songs):
 
 
 
-def get_playlists_from_user(client_id):
+def get_playlists_from_user(client_id, ignore_ids):
     conn = get_db_connection()
     cur = conn.cursor()
+
+    params = list()
 
     try:
         sql = f"SELECT id, name FROM playlist WHERE client_id = '{client_id}'"
 
-        cur.execute(sql)
+        if ignore_ids is not None and len(ignore_ids) > 0:
+            placeholders = ','.join(['%s'] * len(ignore_ids))
+            sql += f" AND id NOT IN ({placeholders})"
+            params.extend(ignore_ids)
+
+        cur.execute(sql, params)
         playlists_response = cur.fetchall()
 
         playlists = []
 
-        if playlists_response is not None:
+        if playlists_response is not None and len(playlists_response) > 0:
             for playlist in playlists_response:
                 print(playlist)
                 playlists.append({

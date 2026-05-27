@@ -301,8 +301,9 @@ def delete_songs_from_playlist():
 def get_playlists_from_user():
     try:
         client_id = request.json['clientId']
+        ignore_ids = request.json['ignoreIds']
 
-        playlists = PlaylistDao.get_playlists_from_user(client_id)
+        playlists = PlaylistDao.get_playlists_from_user(client_id, ignore_ids)
 
         return make_response(
             jsonify(playlists)
