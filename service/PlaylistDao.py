@@ -117,8 +117,32 @@ def get_playlists_from_user(client_id, ignore_ids):
                 playlists.append({
                     "id": playlist[0],
                     "name": playlist[1],
+                    "songs": get_songs_from_playlist(playlist[0])
                 })
         return playlists
+    except Exception as e:
+        print(e.args)
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+
+def get_songs_from_playlist(playlist_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        sql = "SELECT video_id FROM playlist_songs WHERE playlist_id = %s"
+        cur.execute(sql, (playlist_id,))
+        songs_response = cur.fetchall()
+
+        songs = []
+
+        if songs_response is not None and len(songs_response) > 0:
+            for song in songs_response:
+                songs.append(song[0])
+
+        return songs
     except Exception as e:
         print(e.args)
         conn.rollback()
