@@ -10,11 +10,12 @@ def create_playlist(playlist_name, client_id):
     cur = conn.cursor()
 
     try:
-        sql = "INSERT INTO playlist (id, name, client_id) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO playlist (id, name) VALUES (%s, %s); INSERT INTO playlist_clients (id, playlist_id, client_id) VALUES (%s, %s, %s)"
 
         playlist_id = str(uuid.uuid4())
+        playlist_client_id = str(uuid.uuid4())
 
-        cur.execute(sql, (playlist_id, playlist_name, client_id))
+        cur.execute(sql, (playlist_id, playlist_name, playlist_client_id, playlist_id, client_id))
         conn.commit()
 
     except Exception:
@@ -99,7 +100,7 @@ def get_playlists_from_user(client_id, ignore_ids):
     params = list()
 
     try:
-        sql = f"SELECT id, name FROM playlist WHERE client_id = '{client_id}'"
+        sql = f"SELECT p.id, p.name FROM playlist p INNER JOIN playlist_clients as pl_cl ON p.id = pl_cl.playlist_id WHERE pl_cl.client_id = '{client_id}'"
 
         if ignore_ids is not None and len(ignore_ids) > 0:
             placeholders = ','.join(['%s'] * len(ignore_ids))
