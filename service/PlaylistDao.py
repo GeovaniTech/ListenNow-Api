@@ -104,7 +104,7 @@ def get_playlists_from_user(client_id, ignore_ids):
 
         if ignore_ids is not None and len(ignore_ids) > 0:
             placeholders = ','.join(['%s'] * len(ignore_ids))
-            sql += f" AND id NOT IN ({placeholders})"
+            sql += f" AND p.id NOT IN ({placeholders})"
             params.extend(ignore_ids)
 
         cur.execute(sql, params)
