@@ -323,6 +323,23 @@ def get_count_playlists_client():
         log_message_response_error("Failed to count playlists from client", e), 500
 
 
+@app.route("/listennow/playlist/copy", methods=['POST'])
+def copy_playlists_to_user():
+    try:
+        client_receiver_id = request.json['clientReceiverId']
+        client_with_playlists_id = request.json['clientWithPlaylistsId']
+
+        PlaylistDao.copy_playlists_to_another_user(client_receiver_id, client_with_playlists_id)
+
+        return make_response(
+            jsonify(
+                message = "Playlists Copied Successfully"
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to copy playlists to another user", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
