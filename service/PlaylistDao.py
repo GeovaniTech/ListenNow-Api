@@ -43,14 +43,23 @@ def update_playlist(playlist_id, name):
         conn.close()
 
 
-def delete_playlist(playlist_id):
+def delete_playlist(playlist_id, client_id):
     conn = get_db_connection()
     cur = conn.cursor()
 
     try:
-        sql = "DELETE FROM playlist_songs WHERE playlist_id = %s; DELETE FROM playlist WHERE id = %s"
-        cur.execute(sql, (playlist_id, playlist_id))
+        sql = "DELETE FROM playlist_clients WHERE playlist_id = %s AND client_id = %s;"
+        cur.execute(sql, (playlist_id, client_id))
         conn.commit()
+
+        sql = "SELECT COUNT(id) FROM playlist_clients WHERE playlist_id = %s"
+        cur.execute(sql, (playlist_id,))
+        clients_with_playlist = cur.fetchone()
+
+        if clients_with_playlist is None or clients_with_playlist[0] == 0:
+            sql = "DELETE FROM playlist_songs WHERE playlist_id = %s; DELETE FROM playlist WHERE id = %s"
+            cur.execute(sql, (playlist_id, playlist_id))
+            conn.commit()
     except Exception as e:
         print(e.args)
         conn.rollback()

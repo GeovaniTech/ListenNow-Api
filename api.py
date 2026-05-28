@@ -250,8 +250,9 @@ def update_playlist():
 def delete_playlist():
     try:
         playlist_id = request.json['playlistId']
+        client_id = request.json['clientId']
 
-        PlaylistDao.delete_playlist(playlist_id)
+        PlaylistDao.delete_playlist(playlist_id, client_id)
 
         return make_response(
             jsonify(
