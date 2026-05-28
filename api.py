@@ -9,12 +9,12 @@ from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
 from service import PlaylistDao
+from service.AppVersionDao import get_latest_version
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
     insert_songs_from_another_user, delete_client_song
 from service.SongDao import get_user_songs, get_song_file, exists_song_in_database, find_song_by_id_db
 from service.UserDao import *
 from utils.MessageUtil import log_message_response, log_message_response_error
-from service.AppVersionDao import get_latest_version
 
 app = Flask(__name__)
 
@@ -310,6 +310,17 @@ def get_playlists_from_user():
         )
     except Exception as e:
         return log_message_response_error("Failed to get playlists from user", e), 500
+
+
+@app.route("/listennow/playlist/count", methods=['POST'])
+def get_count_playlists_client():
+    try:
+        client_receiver_id = request.json['clientReceiverId']
+        client_with_playlists_id = request.json['clientWithPlaylistsId']
+
+        return PlaylistDao.count_playlists(client_receiver_id, client_with_playlists_id)
+    except Exception as e:
+        log_message_response_error("Failed to count playlists from client", e), 500
 
 
 if __name__ == '__main__':

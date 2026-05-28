@@ -150,3 +150,32 @@ def get_songs_from_playlist(playlist_id):
     finally:
         cur.close()
         conn.close()
+
+
+def count_playlists(client_receiver_id, client_with_playlists_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        sql = """
+              SELECT COUNT(outer_pc.playlist_id)
+              FROM playlist_clients outer_pc
+              WHERE outer_pc.client_id = %s
+                AND NOT EXISTS (SELECT 1
+                                FROM playlist_clients inner_pc
+                                WHERE inner_pc.client_id = %s
+                                  AND inner_pc.playlist_id = outer_pc.playlist_id);
+              """
+
+        cur.execute(sql, (client_with_playlists_id, client_receiver_id))
+        playlists_response = cur.fetchone()
+
+        return {
+            "count": playlists_response[0],
+        }
+    except Exception as e:
+        print(e.args)
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
