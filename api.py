@@ -352,7 +352,7 @@ def get_songs_from_playlist():
             )
         )
     except Exception as e:
-        return log_message_response_error("Failed to copy playlists to another user", e), 500
+        return log_message_response_error("Failed to list songs from playlist", e), 500
 
 
 if __name__ == '__main__':
