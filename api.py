@@ -341,6 +341,20 @@ def copy_playlists_to_user():
         return log_message_response_error("Failed to copy playlists to another user", e), 500
 
 
+@app.route("/listennow/playlist/songs/get", methods=['POST'])
+def get_songs_from_playlist():
+    try:
+        playlist_id = request.json['playlistId']
+
+        return make_response(
+            jsonify(
+                songs = PlaylistDao.get_songs_from_playlist(playlist_id)
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to copy playlists to another user", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
