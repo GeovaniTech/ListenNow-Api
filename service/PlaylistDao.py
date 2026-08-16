@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from utils.databasePG import get_db_connection
@@ -10,12 +11,12 @@ def create_playlist(playlist_name, client_id):
     cur = conn.cursor()
 
     try:
-        sql = "INSERT INTO playlist (id, name) VALUES (%s, %s); INSERT INTO playlist_clients (id, playlist_id, client_id) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO playlist (id, name) VALUES (%s, %s); INSERT INTO playlist_clients (id, playlist_id, client_id, created_at) VALUES (%s, %s, %s, %s)"
 
         playlist_id = str(uuid.uuid4())
         playlist_client_id = str(uuid.uuid4())
 
-        cur.execute(sql, (playlist_id, playlist_name, playlist_client_id, playlist_id, client_id))
+        cur.execute(sql, (playlist_id, playlist_name, playlist_client_id, playlist_id, client_id, datetime.datetime.today()))
         conn.commit()
 
     except Exception:
@@ -210,8 +211,8 @@ def copy_playlists_to_another_user(client_receiver_id, client_with_playlists_id)
 
         if playlists_response is not None and len(playlists_response) > 0:
             for playlist in playlists_response:
-                sql = "INSERT INTO playlist_clients (id, playlist_id, client_id) VALUES (%s, %s, %s)"
-                cur.execute(sql, (str(uuid.uuid4()),  playlist[0], client_receiver_id))
+                sql = "INSERT INTO playlist_clients (id, playlist_id, client_id, created_at) VALUES (%s, %s, %s, %s)"
+                cur.execute(sql, (str(uuid.uuid4()),  playlist[0], client_receiver_id, datetime.datetime.today()))
                 conn.commit()
 
     except Exception as e:
