@@ -345,10 +345,11 @@ def copy_playlists_to_user():
 def get_songs_from_playlist():
     try:
         playlist_id = request.json['playlistId']
+        ignore_ids = request.json['ignoreIds']
 
         return make_response(
             jsonify(
-                songs = PlaylistDao.get_songs_from_playlist(playlist_id)
+                songs = PlaylistDao.get_songs_from_playlist(playlist_id, ignore_ids)
             )
         )
     except Exception as e:

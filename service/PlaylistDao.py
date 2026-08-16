@@ -128,7 +128,7 @@ def get_playlists_from_user(client_id, ignore_ids):
                 playlists.append({
                     "id": playlist[0],
                     "name": playlist[1],
-                    "songs": get_songs_from_playlist(playlist[0])
+                    "songs": get_song_ids_from_playlist(playlist[0])
                 })
         return playlists
     except Exception as e:
@@ -138,7 +138,7 @@ def get_playlists_from_user(client_id, ignore_ids):
         cur.close()
         conn.close()
 
-def get_songs_from_playlist(playlist_id):
+def get_song_ids_from_playlist(playlist_id):
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -222,3 +222,39 @@ def copy_playlists_to_another_user(client_receiver_id, client_with_playlists_id)
         cur.close()
         conn.close()
 
+
+def get_songs_from_playlist(playlist_id, ignore_ids=None):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        sql = f"SELECT s.video_id, s.name, s.artist FROM playlist_songs ps INNER JOIN song s ON s.video_id = ps.video_id WHERE ps.playlist_id = %s"
+
+        params = list()
+        params.append(playlist_id)
+
+        if ignore_ids is not None and len(ignore_ids) > 0:
+            placeholders = ','.join(['%s'] * len(ignore_ids))
+            sql += f" AND ps.video_id NOT IN ({placeholders})"
+            params.extend(ignore_ids)
+
+        cur.execute(sql, params)
+        songs_response = cur.fetchall()
+
+        songs = []
+
+        if songs_response is not None and len(songs_response) > 0:
+            for song in songs_response:
+                songs.append({
+                    "videoId": song[0],
+                    "name": song[1],
+                    "artist": song[2],
+                })
+
+        return songs
+    except Exception as e:
+        print(e.args)
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
