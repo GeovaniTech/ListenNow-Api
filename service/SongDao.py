@@ -1,7 +1,5 @@
 import os
 
-from psycopg2 import sql
-
 from functions.search import *
 from service.ClientSongDao import save_client_song
 from utils.BytesUtil import bytes_to_base64
@@ -54,7 +52,8 @@ def get_user_songs(uuid, ignore_ids):
                album, 
                lyrics,
                thumb,
-               cs.request_date
+               cs.request_date,
+               cs.times_played
         FROM song
         INNER JOIN client_song as cs ON cs.song_id = song.video_id 
         WHERE cs.client_id = '{uuid}'"""
@@ -79,7 +78,8 @@ def get_user_songs(uuid, ignore_ids):
             "album": song[3],
             "lyrics": song[4],
             "thumb": song[5],
-            "request_date": song[6]
+            "request_date": song[6],
+            "timesPlayed": song[7],
         }
 
         songs.append(json_song)
@@ -113,7 +113,8 @@ def find_song_by_id_db(video_id, client_id):
                album, 
                lyrics,
                thumb,
-               cs.request_date
+               cs.request_date,
+               cs.times_played
                FROM song
                INNER JOIN client_song as cs ON cs.song_id = song.video_id 
                WHERE video_id = '{video_id}'
@@ -132,7 +133,8 @@ def find_song_by_id_db(video_id, client_id):
             "album": song[3],
             "lyrics": song[4],
             "thumb": song[5],
-            "request_date": song[6]
+            "request_date": song[6],
+            "timesPlayed": song[7],
         }
 
         return json_song
