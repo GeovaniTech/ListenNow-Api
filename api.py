@@ -8,7 +8,7 @@ from gunicorn.app.base import BaseApplication
 from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
-from service import PlaylistDao
+from service import PlaylistDao, SongDao
 from service.AppVersionDao import get_latest_version
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
     insert_songs_from_another_user, delete_client_song
@@ -354,6 +354,23 @@ def get_songs_from_playlist():
         )
     except Exception as e:
         return log_message_response_error("Failed to list songs from playlist", e), 500
+
+
+@app.route("/listennow/user/songs/increase", methods=['POST'])
+def increase_song_times_played():
+    client_id = request.json['clientId']
+    video_id = request.json['videoId']
+
+    try:
+        SongDao.increase_song_times_played(client_id, video_id)
+
+        return make_response(
+            jsonify(
+              message = "Times played increased Successfully"
+            )
+        ), 200
+    except Exception as e:
+        return log_message_response_error(f"Failed to increase times_played for VideoID: {video_id} and ClientID: {client_id}", e), 500
 
 
 if __name__ == '__main__':
