@@ -159,11 +159,11 @@ def exists_song_in_database(video_id):
         return False
 
 
-def increase_song_times_played(client_id, video_id):
+def increase_song_times_played(client_id, video_id, times_to_increase):
     global conn
     conn = get_db_connection()
 
-    update_query = f"UPDATE client_song SET times_played = times_played + 1 WHERE song_id = '{video_id}' AND client_id = '{client_id}'"
+    update_query = f"UPDATE client_song SET times_played = times_played + {times_to_increase} WHERE song_id = '{video_id}' AND client_id = '{client_id}'"
     cur = conn.cursor()
     cur.execute(update_query)
 

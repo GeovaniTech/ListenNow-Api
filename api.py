@@ -359,10 +359,14 @@ def get_songs_from_playlist():
 @app.route("/listennow/user/songs/increase", methods=['POST'])
 def increase_song_times_played():
     client_id = request.json['clientId']
-    video_id = request.json['videoId']
+    songs = request.json['songs']
 
     try:
-        SongDao.increase_song_times_played(client_id, video_id)
+        for song in songs:
+            video_id = song.get('videoId')
+            times_to_increase = song.get('timesToIncrease')
+
+            SongDao.increase_song_times_played(client_id, video_id, times_to_increase)
 
         return make_response(
             jsonify(
@@ -370,7 +374,7 @@ def increase_song_times_played():
             )
         ), 200
     except Exception as e:
-        return log_message_response_error(f"Failed to increase times_played for VideoID: {video_id} and ClientID: {client_id}", e), 500
+        return log_message_response_error(f"Failed to increase times_played", e), 500
 
 
 if __name__ == '__main__':
