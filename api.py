@@ -8,7 +8,7 @@ from gunicorn.app.base import BaseApplication
 from config.configuration import configure_env
 from functions.download import download
 from functions.search import *
-from service import PlaylistDao, SongDao
+from service import PlaylistDao, SongDao, LogDao
 from service.AppVersionDao import get_latest_version
 from service.ClientSongDao import save_client_song, exists_client_song, get_ids_songs_by_user, \
     insert_songs_from_another_user, delete_client_song
@@ -31,15 +31,6 @@ def verify_api_key():
         return jsonify(message = "API key is invalid"), 401
 
     return None
-
-
-@app.route('/')
-def index():
-    return make_response()
-
-@app.route('/listennow')
-def home_listennow():
-    return render_template("home.html")
 
 
 @app.route('/listennow/search/<string:title>', methods=['GET'])
@@ -377,6 +368,30 @@ def increase_song_times_played():
         return log_message_response_error(f"Failed to increase times_played", e), 500
 
 
+@app.route("/listennow/log/create", methods=['PUT'])
+def insert_log_from_device():
+    logs = request.json['logs']
+    device_id = request.json['deviceId']
+
+    try:
+        for log in logs:
+            log_id = log.get('id')
+            level = log.get('level')
+            tag = log.get('tag')
+            message = log.get('message')
+            created_at = log.get('createdAt')
+
+            LogDao.insert_log_from_device(log_id, level, tag, message, created_at, device_id)
+
+        return make_response(
+            jsonify(
+                message = "Log created Successfully"
+            )
+        )
+    except Exception as e:
+        return log_message_response_error("Failed to create log", e), 500
+
+
 if __name__ == '__main__':
     configure_env()
 
@@ -395,7 +410,7 @@ if __name__ == '__main__':
                 for key, value in config.items():
                     self.cfg.set(key.lower(), value)
 
-            def load(self):
+            def load(self): 
                 return self.application
 
         options = {
